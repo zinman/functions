@@ -1,11 +1,12 @@
-import com.sparkbeyond.runtime.util.datastructures.LRUCache
-import com.sparkbeyond.runtime.feature.types.{LatLong, LatLongDate, TimeSeries, KeyedTimeWindow}
 import com.sparkbeyond.runtime.feature.functions.DateHelper
+import com.sparkbeyond.runtime.util.datastructures.LRUCache
+import com.sparkbeyond.runtime.feature.types.{KeyedTimeWindow, LatLong, LatLongDate, TimeSeries}
 import com.sparkbeyond.runtime.externalsources.weather.Weather
 
-object ExternalWeatherHistoryFunctions {
-  	val lru = LRUCache[LatLongDate,Map[String,Double]](20000)
-
+object WeatherHistoryCache {
+	var lru = LRUCache[LatLongDate,Map[String,Double]](20000)
+}
+object WeatherHistoryFunctions {
 	def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "TEMP")
 	def maxTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MAXTEMP")
 	def minTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MINTEMP")
@@ -28,13 +29,14 @@ object ExternalWeatherHistoryFunctions {
 	private def NOAATimeSeries(timeWindow: KeyedTimeWindow[LatLong], NOAAKey: String): TimeSeries[Double] = {
 		import DateHelper._
 		import Weather._
-		val nDays = DateHelper.diffDays(timeWindow.startDateAsJavaDate, timeWindow.endDateAsJavaDate).toDouble
+		val nDays = DateHelper.diffDays(doubleToDate(timeWindow.startDate), doubleToDate(timeWindow.endDate)).toDouble
 		val interval = if (nDays <= 10) 1 else nDays / 5
 		val result = TimeSeries.fromDatesAndValues( (0.0 until nDays by interval).map(offset => {
-			val currDate = timeWindow.startDateAsJavaDate.plusDays(offset.toInt).toDate
-			val w = lru.getOrElse(LatLongDate(timeWindow.key,currDate),contentForLatLongDate(timeWindow.key,currDate).toMap)
+			val currDate = doubleToDate(timeWindow.startDate).plusDays(offset.toInt).toDate
+			// TODO: contentForLatLongDateSeq loses information about time, how can I make sure the order is kept?
+			val w = WeatherHistoryCache.lru.getOrElse(LatLongDate(timeWindow.key,currDate),contentForLatLongDate(timeWindow.key,currDate).toMap)
 			(currDate, w.getOrElse(NOAAKey, Double.NaN))
-		}))
+		}).toIndexedSeq)
 
 		if (timeWindow.relativeTime) result.copy(x = result.x.map(_ - result.x.last))
 		else result
