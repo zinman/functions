@@ -6,11 +6,9 @@ import com.sparkbeyond.runtime.feature.types.USState
 
 object zerocomplexity_graphFunctions{
 
-	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Int], vertex: Int) = {
+	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Int], vertex: Int) = 
 		graph.graph.outgoingEdgesOf(vertex).map(graph.graph.getEdgeTarget).toSeq
-	}
 
-	def zerocomplexity_lookupMany(seq: Seq[Int], lookup: MapWrapper[Int, Any]) = {
-			seq.flatMap(v=>lookup.get(v))
-	}
+	def zerocomplexity_lookupMany(seq: Seq[Int], lookup: MapWrapper[Int, Any]) = 
+		seq.flatMap(lookup.get)
 }
