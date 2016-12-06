@@ -4,7 +4,7 @@ import com.sparkbeyond.runtime.graph.MapWrapper
 import com.sparkbeyond.runtime.feature.types.USState
 
 
-object zerocomplexity_graphFunctions{
+object Zerocomplexity_graphFunctions{
 
 	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Int], vertex: Int) = 
 		graph.graph.outgoingEdgesOf(vertex).map(graph.graph.getEdgeTarget).toSeq
