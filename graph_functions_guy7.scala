@@ -6,7 +6,7 @@ import com.sparkbeyond.runtime.feature.types.Identifier
 import scala.collection.GenTraversableOnce
 
 
-object Zerocomplexity_graphFunctions_guy6{
+object Zerocomplexity_graphFunctions_guy7{
 	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Identifier,String], vertex: Identifier) = 
 		graph.graph.outgoingEdgesOf(vertex).map(graph.graph.getEdgeTarget).toSeq
 
@@ -17,6 +17,9 @@ object Zerocomplexity_graphFunctions_guy6{
 		seq.flatMap(lookup.get)
 	
 	def zerocomplexity_lookupManyString(seq: Seq[Identifier], lookup: MapWrapper[Identifier, String]) = 
+		seq.flatMap(lookup.get)
+	
+	def zerocomplexity_lookupManyState(seq: Seq[Identifier], lookup: MapWrapper[Identifier, USState]) = 
 		seq.flatMap(lookup.get)
 	
 	def zerocomplexity_averageInt(i: GenTraversableOnce[Int]) = if (i.isEmpty) 0.0
