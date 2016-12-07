@@ -8,6 +8,6 @@ object Zerocomplexity_graphFunctions{
 	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Int], vertex: Int) = 
 		graph.graph.outgoingEdgesOf(vertex).map(graph.graph.getEdgeTarget).toSeq
 
-	def zerocomplexity_lookupMany(seq: Seq[Int], lookup: MapWrapper[Int, Any]) = 
+	def zerocomplexity_lookupMany(seq: Seq[Int], lookup: MapWrapper[Int, USState]) = 
 		seq.flatMap(lookup.get)
 }
