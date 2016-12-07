@@ -3,9 +3,10 @@ import collection.JavaConversions._
 import com.sparkbeyond.runtime.graph.MapWrapper
 import com.sparkbeyond.runtime.feature.types.USState
 import com.sparkbeyond.runtime.feature.types.Identifier
+import scala.collection.GenTraversableOnce
 
 
-object Zerocomplexity_graphFunctions_guy5{
+object Zerocomplexity_graphFunctions_guy6{
 	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Identifier,String], vertex: Identifier) = 
 		graph.graph.outgoingEdgesOf(vertex).map(graph.graph.getEdgeTarget).toSeq
 
