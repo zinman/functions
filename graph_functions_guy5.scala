@@ -6,7 +6,7 @@ import com.sparkbeyond.runtime.feature.types.Identifier
 
 
 object Zerocomplexity_graphFunctions_guy5{
-	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Identifier], vertex: Identifier) = 
+	def zerocomplexity_adjacentNodes(graph: JGraphTWrapper[Identifier,String], vertex: Identifier) = 
 		graph.graph.outgoingEdgesOf(vertex).map(graph.graph.getEdgeTarget).toSeq
 
 	def zerocomplexity_lookupManyInt(seq: Seq[Identifier], lookup: MapWrapper[Identifier, Int]) = 
