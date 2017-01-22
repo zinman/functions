@@ -1,0 +1,11 @@
+//Scala syntax
+object code_zerocomplexity{
+  import org.apache.commons.lang.StringUtils
+  import com.sparkbeyond.runtime.util.misc.Pimps._
+  import com.sparkbeyond.runtime.feature.types._
+  import com.sparkbeyond.runtime.feature.functions.SpecialFunctions
+  
+  def myTKNZ(s: SemanticWrapper) = {
+	StringUtils.split(s.string.toLowerCase, SpecialFunctions.punctuation).toSeq.map(_.trim)
+}
+}
